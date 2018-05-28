@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int PICK_IMAGE_REQUEST = 234;
     //For capturing image directly from the camera using intent
     private static final int CAMERA_REQUEST = 1888;
-    //    private ImageView mimageView;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     //Firebase
     FirebaseStorage storage;
@@ -142,39 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         storageDir.mkdirs();
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
-/*
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-*/
-
-   /* public String getRealPathFromURI(Uri uri) {
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        cursor.moveToFirst();
-        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-        return cursor.getString(idx);
-    }*/
-   /* public String getFilePath(Uri uri) {
-
-        String file_path = null;
-
-
-        Cursor cursor = getContentResolver().query(uri,
-                new String[] { android.provider.MediaStore.MediaColumns.DATA },
-                null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            file_path = cursor.getString(0);
-            cursor.close();
-        } else {
-            file_path = uri.getPath();
-        }
-        return file_path;
-    }*/
 
     //method to show file chooser
     private void showFileChooser() {
@@ -196,24 +162,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageView.setImageBitmap(bitmap);
-//                String naem = getFilePath(filePath);
-//                exifcalc(filePath);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-//camera capture
+        //camera capture
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             try {
                 Bitmap photo = MediaStore.Images.Media.getBitmap(this.getContentResolver(), (filePath));
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                TextView th = (TextView) findViewById(R.id.tv);
-//                th.append("camera capture uri: inside second " + filePath);
                 imageView.setImageBitmap(photo);
-
-//                exifcalc(filePath);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -257,7 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             downloadUrl = riversRef.getDownloadUrl().toString();
                             Log.v("link pewdie:", "" + downloadUrl);
                             Task<Uri> dUrl = riversRef.getDownloadUrl();
-//                            downloadUrl = downloadUrl.uriString;
                             riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -274,13 +231,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 }
                             });
-                            /*try {
-                                exifcalc(filePath);
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }*/
-
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -305,22 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                         }
                     });
-//            Task<Uri> uri = riversRef.getDownloadUrl();
-            /*final String urld = riversRef.getDownloadUrl().toString();
-            Log.v("pew link:", urld);
-            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Toast.makeText(getApplicationContext(), "" + uri.toString(), Toast.LENGTH_LONG).show();
-                    Log.e("your link:", uri.toString());
-                    downloadUrl = uri.toString();
-                    try {
-                        exifcalc(filePath);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });*/
+
         }
         //if there is not any file
         else {
@@ -356,17 +291,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
-
-/*    public String getName(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        @SuppressWarnings("deprecation")
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        int column_index = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }*/
-
 
     /**
      * Creating new Image node under images
